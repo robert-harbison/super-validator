@@ -1,6 +1,11 @@
+import { setConfig } from '..'
 import doesMatch from './DoesMatch'
 
-describe('Validator:doesMatch()', () => {
+beforeEach(() => {
+	setConfig(null)
+})
+
+describe('DoesMatch:doesMatch()', () => {
 	test('Should return null if values match.', () => {
 		expect(doesMatch('test')('test')).toEqual(null)
 	})
@@ -11,5 +16,15 @@ describe('Validator:doesMatch()', () => {
 
 	test('Should return custom message if provided when values do not match', () => {
 		expect(doesMatch('test', 'Custom')('test12')).toEqual('Custom')
+	})
+
+	test('Should return config message if set as error', () => {
+		setConfig({ language: { doesMatch: 'CONFIG CUSTOM!' } })
+		expect(doesMatch('test')('test12')).toEqual('CONFIG CUSTOM!')
+	})
+
+	test('Provided message should override config message.', () => {
+		setConfig({ language: { doesMatch: 'CONFIG CUSTOM!' } })
+		expect(doesMatch('test', 'msg')('test12')).toEqual('msg')
 	})
 })

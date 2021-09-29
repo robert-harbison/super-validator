@@ -98,5 +98,5 @@ export const exportedForTesting = {
 // Add options for custom language.
 // add docs.... jsdocs?
 // Add readme
-// Add contributions file
-// Add license
+// TODO: Support optional peer dependiences like validator js.
+// TODO: add password validator that takes in password options.

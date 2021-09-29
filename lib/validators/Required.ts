@@ -1,10 +1,11 @@
+import { config } from '../core/Config'
 import { ErrorReturnTypes } from '../core/Validator'
 
 const required =
 	(customMessage?: string) =>
 	(value: unknown): ErrorReturnTypes => {
 		if (value === undefined || value === null) {
-			return customMessage || 'Required.'
+			return customMessage || config?.language?.required || 'Required.'
 		}
 
 		return null

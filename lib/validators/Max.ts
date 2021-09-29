@@ -1,10 +1,11 @@
+import { config } from '../core/Config'
 import { ErrorReturnTypes } from '../core/Validator'
 
 const max =
 	(maxValue: number, customMessage?: string) =>
 	(value: string): ErrorReturnTypes => {
 		if (value && value.length > maxValue) {
-			return customMessage || 'Too long.'
+			return customMessage || config?.language?.max || 'Too long.'
 		}
 		return null
 	}
