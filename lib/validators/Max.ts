@@ -6,7 +6,7 @@ const max =
 	(maxValue: number, customMessage?: string) =>
 	(fieldKey: string, value: string): ErrorReturnTypes => {
 		if (value && value.length > maxValue) {
-			return (customMessage && format(customMessage, fieldKey, value)) || (config?.language?.max && format(config?.language?.max, fieldKey, value)) || 'Too long.'
+			return (customMessage && format(customMessage, fieldKey, value, maxValue)) || format(config?.language?.max, fieldKey, value, maxValue)
 		}
 		return null
 	}

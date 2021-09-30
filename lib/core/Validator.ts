@@ -95,7 +95,6 @@ export const exportedForTesting = {
 // Validators like min and max don't return a error if nothing is provided.
 // Adding variables to messages. 0 is fieldKey, 1 is value
 
-// TODO: ALL THESE
 // TODO: Make default config that is used and update validors to use it. User shold be able to merge config into it.
 // TODO: Test doesMatch dev message with a object.
 // TODO: Make schema support nested objects.

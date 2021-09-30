@@ -6,7 +6,7 @@ const doesMatch =
 	(toMatch: unknown, customMessage?: string) =>
 	(fieldKey: string, value: unknown): ErrorReturnTypes => {
 		if (value !== toMatch) {
-			return (customMessage && format(customMessage, fieldKey, value)) || (config?.language?.doesMatch && format(config?.language?.doesMatch, fieldKey, value)) || 'Must match.'
+			return (customMessage && format(customMessage, fieldKey, value)) || format(config.language.doesMatch, fieldKey, value)
 		}
 		return null
 	}

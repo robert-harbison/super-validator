@@ -17,8 +17,8 @@ describe('Max:min()', () => {
 	})
 
 	test('Should return error if value is longer than required length.', () => {
-		expect(max(3)('theField', 'test')).toEqual('Too long.')
-		expect(max(3)('theField', 'test')).toEqual('Too long.')
+		expect(max(3)('theField', 'test')).toEqual('`theField` is longer than `3`.')
+		expect(max(3)('theField', 'test')).toEqual('`theField` is longer than `3`.')
 	})
 
 	test('Should return custom error message if value is longer than required length and custom message is provided.', () => {

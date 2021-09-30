@@ -6,7 +6,7 @@ const required =
 	(customMessage?: string) =>
 	(fieldKey: string, value: unknown): ErrorReturnTypes => {
 		if (value === undefined || value === null) {
-			return (customMessage && format(customMessage, fieldKey, value)) || (config?.language?.required && format(config?.language?.required, fieldKey, value)) || 'Required.'
+			return (customMessage && format(customMessage, fieldKey, value)) || format(config?.language?.required, fieldKey, value)
 		}
 
 		return null

@@ -11,7 +11,7 @@ describe('DoesMatch:doesMatch()', () => {
 	})
 
 	test('Should return error if value does not match.', () => {
-		expect(doesMatch('test')('theField', 'test12')).toEqual('Must match.')
+		expect(doesMatch('test')('theField', 'test12')).toEqual('`theField` does not match `test12`.')
 	})
 
 	test('Should return custom message if provided when values do not match', () => {

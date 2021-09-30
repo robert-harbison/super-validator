@@ -17,7 +17,7 @@ describe('Min:min()', () => {
 	})
 
 	test('Should return error if value is shorter than required length.', () => {
-		expect(min(3)('fieldName', 'te')).toEqual('Too short.')
+		expect(min(3)('fieldName', 'te')).toEqual('`fieldName` is shorter than `3`.')
 	})
 
 	test('Should return custom error message if value is shorter than required length and custom message is provided.', () => {

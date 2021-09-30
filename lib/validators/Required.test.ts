@@ -7,8 +7,8 @@ beforeEach(() => {
 
 describe('Required:required()', () => {
 	test('Should return error if value is null or undefined.', () => {
-		expect(required()('theField', null)).toEqual('Required.')
-		expect(required()('theField', undefined)).toEqual('Required.')
+		expect(required()('theField', null)).toEqual('`theField` is required.')
+		expect(required()('theField', undefined)).toEqual('`theField` is required.')
 	})
 
 	test('Should not return error if value is defined.', () => {
