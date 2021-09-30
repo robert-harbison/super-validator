@@ -1,4 +1,5 @@
 interface Config {
+	// TODO: Rename this to messages
 	language?: {
 		min?: string
 		max?: string

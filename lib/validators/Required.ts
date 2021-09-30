@@ -1,11 +1,12 @@
 import { config } from '../core/Config'
 import { ErrorReturnTypes } from '../core/Validator'
+import { format } from '../utils/StringUtils'
 
 const required =
 	(customMessage?: string) =>
-	(value: unknown): ErrorReturnTypes => {
+	(fieldKey: string, value: unknown): ErrorReturnTypes => {
 		if (value === undefined || value === null) {
-			return customMessage || config?.language?.required || 'Required.'
+			return (customMessage && format(customMessage, fieldKey, value)) || (config?.language?.required && format(config?.language?.required, fieldKey, value)) || 'Required.'
 		}
 
 		return null

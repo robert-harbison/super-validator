@@ -10,6 +10,10 @@ describe('Validator:processSingleValidator()', () => {
 	test('Should return a array of string as the validation result.', () => {
 		expect(processSingleValidator((value: unknown) => ['Error1', 'Error2'], 'theValue')).toEqual(['Error1', 'Error2'])
 	})
+
+	test('Should return null if there is no errors.', () => {
+		expect(processSingleValidator((value: unknown) => null, 'theValue')).toEqual(null)
+	})
 })
 
 describe('Validator:processListOfValidators()', () => {

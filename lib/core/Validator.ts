@@ -93,10 +93,22 @@ export const exportedForTesting = {
 }
 // Notes validation function can return strings or arrays of string if it returns null there is no error. This will later be made into a object so you can have a dev and user message.
 // Validators like min and max don't return a error if nothing is provided.
+// Adding variables to messages. 0 is fieldKey, 1 is value
 
 // TODO: ALL THESE
-// Add options for custom language.
+// TODO: Make default config that is used and update validors to use it. User shold be able to merge config into it.
+// TODO: Test doesMatch dev message with a object.
+// TODO: Make schema support nested objects.
 // add docs.... jsdocs?
 // Add readme
-// TODO: Support optional peer dependiences like validator js.
 // TODO: add password validator that takes in password options.
+// TODO Add validators: phone, email, boolean.
+// TODO: Optimize / review code
+// TODO: Fix Todos
+// TODO: Try to optimise performance.
+// TODO: Test in typescript. test in es6 and test in legacy js
+// TODO: Test validate single.
+// TODO: Add circle ci
+// TODO: Release
+// TOOD: Add phone, email validator + look at validator js for other ideas to add.
+// TODO: Integrate into meeting_app and make sure it all works
