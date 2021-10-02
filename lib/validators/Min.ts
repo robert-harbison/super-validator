@@ -13,3 +13,5 @@ const min =
 	}
 
 export default min
+
+// TODO: Make min and max work for numbers and strings.

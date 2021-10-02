@@ -4,70 +4,73 @@ const { processSingleValidator, processListOfValidators } = exportedForTesting
 
 describe('Validator:processSingleValidator()', () => {
 	test('Should return a string as the validation result.', () => {
-		expect(processSingleValidator((value: unknown) => 'Error', 'theValue')).toEqual('Error')
+		expect(processSingleValidator((fieldKey: string, value: unknown) => 'Error', 'field', 'theValue')).toEqual('Error')
 	})
 
 	test('Should return a array of string as the validation result.', () => {
-		expect(processSingleValidator((value: unknown) => ['Error1', 'Error2'], 'theValue')).toEqual(['Error1', 'Error2'])
+		expect(processSingleValidator((fieldKey: string, value: unknown) => ['Error1', 'Error2'], 'field', 'theValue')).toEqual(['Error1', 'Error2'])
 	})
 
 	test('Should return null if there is no errors.', () => {
-		expect(processSingleValidator((value: unknown) => null, 'theValue')).toEqual(null)
+		expect(processSingleValidator((fieldKey: string, value: unknown) => null, 'field', 'theValue')).toEqual(null)
 	})
 })
 
 describe('Validator:processListOfValidators()', () => {
-	const validatorString = (value: unknown) => 'Error'
-	const validatorArray = (value: unknown) => ['Error1', 'Error2']
+	const validatorString = (fieldKey: string, value: unknown) => 'Error'
+	const validatorArray = (fieldKey: string, value: unknown) => ['Error1', 'Error2']
 
 	test('Should return a array of strings for each error in the list', () => {
-		expect(processListOfValidators([validatorString, validatorString, validatorString], 'theValue')).toEqual(['Error', 'Error', 'Error'])
+		expect(processListOfValidators([validatorString, validatorString, validatorString], 'field', 'theValue')).toEqual(['Error', 'Error', 'Error'])
 	})
 
 	test('Should return a array of strings with all strings from each error.', () => {
-		expect(processListOfValidators([validatorArray, validatorArray, validatorArray], 'theValue')).toEqual(['Error1', 'Error2', 'Error1', 'Error2', 'Error1', 'Error2'])
+		expect(processListOfValidators([validatorArray, validatorArray, validatorArray], 'field', 'theValue')).toEqual(['Error1', 'Error2', 'Error1', 'Error2', 'Error1', 'Error2'])
 	})
 
 	test('Should return no errors if the validator does not return anything or null.', () => {
 		expect(
 			processListOfValidators(
 				[
-					(value: unknown): any => {
+					(fieldKey: string, value: unknown): any => {
 						return
 					},
 				],
+				'field',
 				'value',
 			),
 		).toEqual(null)
-		expect(processListOfValidators([(value: unknown) => null], 'value')).toEqual(null)
+		expect(processListOfValidators([(fieldKey: string, value: unknown) => null], 'field', 'value')).toEqual(null)
 	})
 })
 
 describe('Validator:validateSingle()', () => {
-	const validatorString = (value: unknown) => 'Error'
-	const validatorArray = (value: unknown) => ['Error1', 'Error2']
+	const validatorString = (fieldKey: string, value: unknown) => 'Error'
+	const validatorArray = (fieldKey: string, value: unknown) => ['Error1', 'Error2']
 
 	describe('validateSingle() should return proper values regardless of it being a single validator or a list of validators', () => {
 		test('Should return a string as the validation result.', () => {
-			expect(validateSingle('theValue', validatorString)).toEqual('Error')
+			expect(validateSingle('field', 'theValue', validatorString)).toEqual('Error')
 		})
 
 		test('Should return a array of string as the validation result.', () => {
-			expect(validateSingle('theValue', validatorArray)).toEqual(['Error1', 'Error2'])
+			expect(validateSingle('field', 'theValue', validatorArray)).toEqual(['Error1', 'Error2'])
 		})
 
 		test('Should return a array of strings for each error in the list', () => {
-			expect(validateSingle('theValue', [validatorString, validatorString, validatorString])).toEqual(['Error', 'Error', 'Error'])
+			expect(validateSingle('field', 'theValue', [validatorString, validatorString, validatorString])).toEqual(['Error', 'Error', 'Error'])
 		})
 
 		test('Should return a array of strings with all strings from each error.', () => {
-			expect(validateSingle('theValue', [validatorArray, validatorArray, validatorArray])).toEqual(['Error1', 'Error2', 'Error1', 'Error2', 'Error1', 'Error2'])
+			expect(validateSingle('field', 'theValue', [validatorArray, validatorArray, validatorArray])).toEqual(['Error1', 'Error2', 'Error1', 'Error2', 'Error1', 'Error2'])
 		})
 	})
 })
 
 describe('Validator:validateSchema()', () => {
-	const validatorStringEqualsTest = (value: unknown) => (!value || value !== 'test' ? 'Value does not equal test' : null)
+	const validatorStringEqualsTest = (fieldKey: string, value: unknown) => {
+		return !value || value !== 'test' ? 'Value does not equal test' : null
+	}
 
 	test('Should return no errors if schema passes', () => {
 		const schema = {

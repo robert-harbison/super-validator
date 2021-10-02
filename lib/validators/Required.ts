@@ -5,7 +5,7 @@ import { format } from '../utils/StringUtils'
 const required =
 	(customMessage?: string) =>
 	(fieldKey: string, value: unknown): ErrorReturnTypes => {
-		if (value === undefined || value === null) {
+		if (value == null) {
 			return (customMessage && format(customMessage, fieldKey, value)) || format(config?.language?.required, fieldKey, value)
 		}
 

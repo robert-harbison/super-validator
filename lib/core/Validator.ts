@@ -1,6 +1,6 @@
 import { GenericObjectOfType, GenericObject } from '../utils/ObjectUtils'
 
-type ValidatorFunction = (value: unknown) => ErrorReturnTypes
+type ValidatorFunction = (fieldKey: string, value: unknown) => ErrorReturnTypes
 
 export type ErrorReturnTypes = string | string[] | null // TODO: Should we really have this string type here?
 export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[]> {}
@@ -16,17 +16,21 @@ export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes> {}
 export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSchema): ValidatorError[] | null => {
 	const errors: ValidatorError[] = []
 
-	const toValidateObjKeys = Object.keys(toValidateObj)
-	for (let i = 0; i < toValidateObjKeys.length; i++) {
-		const toValidateObjKey = toValidateObjKeys[i]
+	const schemaObj = Object.keys(schema)
+	for (let i = 0; i < schemaObj.length; i++) {
+		const toValidateObjKey = schemaObj[i]
 		const objValue = toValidateObj[toValidateObjKey]
 		const schemaValidatorFuncs = schema[toValidateObjKey]
 
-		const validationResult = validateSingle(objValue, schemaValidatorFuncs)
-		if (validationResult && validationResult.length > 0) {
-			const errorObj: GenericObject = {}
-			errorObj[toValidateObjKey] = validationResult
-			errors.push(errorObj)
+		if (schemaValidatorFuncs !== undefined) {
+			const validationResult = validateSingle(toValidateObjKey, objValue, schemaValidatorFuncs)
+			if (validationResult && validationResult.length > 0) {
+				const errorObj: GenericObject = {}
+				errorObj[toValidateObjKey] = validationResult
+				errors.push(errorObj)
+			}
+		} else {
+			// TODO: Add config option to error on key in object does not exist. Also this check should be more for the key than the schema validor. This was to fix error when value in object is non existant.
 		}
 	}
 
@@ -44,18 +48,18 @@ export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSc
  * @param schemaValidatorFuncs The validator function or array of validator functions to use to validate the value provided.
  * @returns The errors from validating. Returns 'null' if there are no erros.
  */
-export const validateSingle = (valueToValidate: unknown, schemaValidatorFuncs: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
+export const validateSingle = (fieldKey: string, valueToValidate: unknown, schemaValidatorFuncs: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
 	if (Array.isArray(schemaValidatorFuncs)) {
-		return processListOfValidators(schemaValidatorFuncs, valueToValidate)
+		return processListOfValidators(schemaValidatorFuncs, fieldKey, valueToValidate)
 	} else {
-		return processSingleValidator(schemaValidatorFuncs, valueToValidate)
+		return processSingleValidator(schemaValidatorFuncs, fieldKey, valueToValidate)
 	}
 }
 
-const processSingleValidator = (validator: ValidatorFunction, valueToValidate: unknown): ErrorReturnTypes => {
-	const funcReturned = validator(valueToValidate)
+const processSingleValidator = (validator: ValidatorFunction, fieldKey: string, valueToValidate: unknown): ErrorReturnTypes => {
+	const funcReturned = validator(fieldKey, valueToValidate)
 
-	if (funcReturned === undefined || funcReturned === null) {
+	if (funcReturned == null) {
 		return null
 	} else if (Array.isArray(funcReturned)) {
 		return [...funcReturned]
@@ -64,14 +68,13 @@ const processSingleValidator = (validator: ValidatorFunction, valueToValidate: u
 	}
 }
 
-const processListOfValidators = (validators: ValidatorFunction[], valueToValidate: unknown): ErrorReturnTypes => {
+const processListOfValidators = (validators: ValidatorFunction[], fieldKey: string, valueToValidate: unknown): ErrorReturnTypes => {
 	let validationResult: string[] = []
 
 	for (let i = 0; i < validators.length; i++) {
 		const validatorFunc = validators[i]
-		const funcReturned = validatorFunc(valueToValidate)
-
-		if (funcReturned !== null && funcReturned !== undefined) {
+		const funcReturned = validatorFunc(fieldKey, valueToValidate)
+		if (funcReturned != null) {
 			if (Array.isArray(funcReturned)) {
 				validationResult = [...validationResult, ...funcReturned]
 			} else {
@@ -95,18 +98,16 @@ export const exportedForTesting = {
 // Validators like min and max don't return a error if nothing is provided.
 // Adding variables to messages. 0 is fieldKey, 1 is value
 
-// TODO: Make default config that is used and update validors to use it. User shold be able to merge config into it.
 // TODO: Test doesMatch dev message with a object.
-// TODO: Make schema support nested objects.
-// add docs.... jsdocs?
+// TODO: Add links throughout read me.
 // Add readme
 // TODO: add password validator that takes in password options.
-// TODO Add validators: phone, email, boolean.
 // TODO: Optimize / review code
 // TODO: Fix Todos
 // TODO: Try to optimise performance.
 // TODO: Test in typescript. test in es6 and test in legacy js
-// TODO: Test validate single.
+// TODO: Test in project.
+// TODO: Look at doing some of the in the future in readme.
 // TODO: Add circle ci
 // TODO: Release
 // TOOD: Add phone, email validator + look at validator js for other ideas to add.

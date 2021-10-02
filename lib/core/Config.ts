@@ -11,6 +11,7 @@ interface Config {
 }
 
 interface ConfigOptions {
+	// TODO: Should we use partial instead of defining this again?
 	// TODO: Rename this to messages
 	language?: {
 		min?: string
