@@ -13,5 +13,3 @@ const required =
 	}
 
 export default required
-
-// TODO: Add opposite variations for these types of validators do it nicely though like adding not method before or someting.

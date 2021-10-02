@@ -2,7 +2,7 @@ import { GenericObjectOfType, GenericObject } from '../utils/ObjectUtils'
 
 type ValidatorFunction = (fieldKey: string, value: unknown) => ErrorReturnTypes
 
-export type ErrorReturnTypes = string | string[] | null // TODO: Should we really have this string type here?
+export type ErrorReturnTypes = string | string[] | null
 export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[]> {}
 export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes> {}
 
@@ -29,8 +29,6 @@ export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSc
 				errorObj[toValidateObjKey] = validationResult
 				errors.push(errorObj)
 			}
-		} else {
-			// TODO: Add config option to error on key in object does not exist. Also this check should be more for the key than the schema validor. This was to fix error when value in object is non existant.
 		}
 	}
 
@@ -98,8 +96,8 @@ export const exportedForTesting = {
 // Validators like min and max don't return a error if nothing is provided.
 // Adding variables to messages. 0 is fieldKey, 1 is value
 
-// TODO: Test doesMatch dev message with a object.
 // TODO: Add links throughout read me.
+// Support nested schemas
 // Add readme
 // TODO: add password validator that takes in password options.
 // TODO: Optimize / review code

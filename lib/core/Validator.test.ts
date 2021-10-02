@@ -86,11 +86,10 @@ describe('Validator:validateSchema()', () => {
 		expect(validateSchema({ firstName: 'test123' }, schema)).toEqual([{ firstName: 'Value does not equal test' }])
 	})
 
-	// // TODO: Make it so a value can be required
-	// test('Should return errors if value does not exist therefore schema does not pass', () => {
-	// 	const schema = {
-	// 		firstName: validatorStringEqualsTest,
-	// 	}
-	// 	expect(validateSchema({}, schema)).toEqual([{ firstName: 'Value does not equal test' }])
-	// })
+	test('Should return errors if value does not exist therefore schema does not pass', () => {
+		const schema = {
+			firstName: validatorStringEqualsTest,
+		}
+		expect(validateSchema({}, schema)).toEqual([{ firstName: 'Value does not equal test' }])
+	})
 })
