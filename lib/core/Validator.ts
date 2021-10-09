@@ -1,10 +1,10 @@
-import { GenericObjectOfType, GenericObject } from '../utils/ObjectUtils'
+import { GenericObjectOfType, GenericObject, addNestedValueToObj } from '../utils/ObjectUtils'
 
 type ValidatorFunction = (fieldKey: string, value: unknown) => ErrorReturnTypes
 
 export type ErrorReturnTypes = string | string[] | null
-export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[]> {}
-export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes> {}
+export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[] | GenericObject> {}
+export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes | ValidatorError> {}
 
 /**
  * Validates a object against a schema.
@@ -13,40 +13,51 @@ export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes> {}
  * @param schema The schema to use for validation.
  * @returns The errors from validating. Returns 'null' if there are no erros.
  */
-export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSchema): ValidatorError[] | null => {
-	const errors: ValidatorError[] = []
+export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSchema): ValidatorError | null => {
+	const errors: ValidatorError = {}
 
-	const schemaObj = Object.keys(schema)
-	for (let i = 0; i < schemaObj.length; i++) {
-		const toValidateObjKey = schemaObj[i]
-		const objValue = toValidateObj[toValidateObjKey]
-		const schemaValidatorFuncs = schema[toValidateObjKey]
+	// Object to validate, validation schema, nested object parent key
+	const validationStack: Array<[GenericObject, ValidatorSchema, string[]?]> = [[toValidateObj, schema]]
 
-		if (schemaValidatorFuncs !== undefined) {
-			const validationResult = validateSingle(toValidateObjKey, objValue, schemaValidatorFuncs)
-			if (validationResult && validationResult.length > 0) {
-				const errorObj: GenericObject = {}
-				errorObj[toValidateObjKey] = validationResult
-				errors.push(errorObj)
+	while (validationStack.length > 0) {
+		const validationParams = validationStack.pop()
+		if (!validationParams) continue
+
+		const [objToValidate, validationSchema, parentObjPath] = validationParams
+		if (objToValidate === undefined || validationSchema === undefined) continue
+
+		const keys = Object.keys(validationSchema)
+		for (let i = 0; i < keys.length; i++) {
+			const key = keys[i]
+			const validator = validationSchema[key]
+			const value = objToValidate[key]
+
+			if (Array.isArray(validator) || typeof validator === 'function') {
+				// TODO: Can we remove this as?
+				const validationResult = validateSingle(key, value, validator as ValidatorFunction | ValidatorFunction[])
+				if (validationResult && validationResult.length > 0) {
+					if (parentObjPath !== undefined) {
+						addNestedValueToObj(errors, [...parentObjPath, key], validationResult)
+					} else {
+						errors[key] = validationResult
+					}
+				}
+				// Deals with nested schemas and objects.
+			} else if (typeof validator === 'object') {
+				const _parentObjPath = parentObjPath ? [...parentObjPath, key] : [key]
+				validationStack.push([value, validator, _parentObjPath])
 			}
 		}
 	}
 
-	if (errors.length === 0) {
+	if (Object.keys(errors).length === 0) {
 		return null
 	}
 
 	return errors
 }
 
-/**
- * Validates a single object.
- *
- * @param valueToValidate The value to use for validation.
- * @param schemaValidatorFuncs The validator function or array of validator functions to use to validate the value provided.
- * @returns The errors from validating. Returns 'null' if there are no erros.
- */
-export const validateSingle = (fieldKey: string, valueToValidate: unknown, schemaValidatorFuncs: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
+const validateSingle = (fieldKey: string, valueToValidate: unknown, schemaValidatorFuncs: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
 	if (Array.isArray(schemaValidatorFuncs)) {
 		return processListOfValidators(schemaValidatorFuncs, fieldKey, valueToValidate)
 	} else {
@@ -59,15 +70,13 @@ const processSingleValidator = (validator: ValidatorFunction, fieldKey: string, 
 
 	if (funcReturned == null) {
 		return null
-	} else if (Array.isArray(funcReturned)) {
-		return [...funcReturned]
-	} else {
-		return funcReturned
 	}
+
+	return Array.isArray(funcReturned) ? [...funcReturned] : funcReturned
 }
 
 const processListOfValidators = (validators: ValidatorFunction[], fieldKey: string, valueToValidate: unknown): ErrorReturnTypes => {
-	let validationResult: string[] = []
+	let validationResult: string | string[] = []
 
 	for (let i = 0; i < validators.length; i++) {
 		const validatorFunc = validators[i]
@@ -91,14 +100,19 @@ const processListOfValidators = (validators: ValidatorFunction[], fieldKey: stri
 export const exportedForTesting = {
 	processListOfValidators,
 	processSingleValidator,
+	validateSingle,
 }
 // Notes validation function can return strings or arrays of string if it returns null there is no error. This will later be made into a object so you can have a dev and user message.
 // Validators like min and max don't return a error if nothing is provided.
 // Adding variables to messages. 0 is fieldKey, 1 is value
+// When validating a schema if you pass in a array of validators it will return a array of errors instead of a string
 
 // TODO: Add links throughout read me.
+// TODO: Add minification? / obsufaction?
 // Support nested schemas
+// TODO: Change name to something like validate js schema and make it really based of validate js not a library that just supports it.
 // Add readme
+// TODO: Add support for validate js. Make a validator (Like useValidatorJs) that takes in a validate js function. Only works with custom and validation js functions.
 // TODO: add password validator that takes in password options.
 // TODO: Optimize / review code
 // TODO: Fix Todos

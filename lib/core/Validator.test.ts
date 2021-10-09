@@ -1,6 +1,7 @@
-import { exportedForTesting, validateSingle, validateSchema } from './Validator'
+import { max, min, required } from '..'
+import { exportedForTesting, validateSchema, ValidatorSchema } from './Validator'
 
-const { processSingleValidator, processListOfValidators } = exportedForTesting
+const { processSingleValidator, processListOfValidators, validateSingle } = exportedForTesting
 
 describe('Validator:processSingleValidator()', () => {
 	test('Should return a string as the validation result.', () => {
@@ -83,13 +84,49 @@ describe('Validator:validateSchema()', () => {
 		const schema = {
 			firstName: validatorStringEqualsTest,
 		}
-		expect(validateSchema({ firstName: 'test123' }, schema)).toEqual([{ firstName: 'Value does not equal test' }])
+		expect(validateSchema({ firstName: 'test123' }, schema)).toEqual({ firstName: 'Value does not equal test' })
 	})
 
 	test('Should return errors if value does not exist therefore schema does not pass', () => {
 		const schema = {
 			firstName: validatorStringEqualsTest,
 		}
-		expect(validateSchema({}, schema)).toEqual([{ firstName: 'Value does not equal test' }])
+		expect(validateSchema({}, schema)).toEqual({ firstName: 'Value does not equal test' })
+	})
+
+	test('Should return proper response for tested objects.', () => {
+		const schema: ValidatorSchema = {
+			test: required(),
+			test2: required(),
+			test3: required(),
+			options: {
+				testa: [required(), min(5)],
+				test2: required(),
+				testb: {
+					testc: [required(), min(5), max(2)],
+					testd: required(),
+					testf: required(),
+				},
+			},
+		}
+
+		// No errors obj has no errors.
+		const test = validateSchema(
+			{
+				test: 'test',
+				test3: 'test2',
+				options: {
+					test124: 'tasd',
+					testa: 'tesasdasd',
+					testb: { testc: 'aas', testd: 'asdasd' },
+				},
+			},
+			schema,
+		)
+
+		expect(test).toEqual({
+			test2: '`test2` is required.',
+			options: { test2: '`test2` is required.', testb: { testc: ['`testc` is shorter than `5`.', '`testc` is longer than `2`.'], testf: '`testf` is required.' } },
+		})
 	})
 })

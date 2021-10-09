@@ -9,8 +9,8 @@
 		"prepublish": "npm run test && npm run build",
 		"build": "tsc",
 		"lint": "eslint ./lib --ext .ts",
-		"test": "jest",
-		"test:coverage": "jest --collectCoverage"
+		"test": "npm run build && jest",
+		"test:coverage": "npm run build && jest --collectCoverage"
 	},
 	"keywords": [
 		"validator",
