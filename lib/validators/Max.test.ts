@@ -40,7 +40,7 @@ describe('Max:min()', () => {
 	})
 
 	test('Provided message should override config message.', () => {
-		setConfig({ language: { doesMatch: 'CONFIG CUSTOM!' } })
+		setConfig({ language: { maxString: 'CONFIG CUSTOM!' } })
 		expect(max(3, 'msg')('theField', 'test')).toEqual('msg')
 	})
 })

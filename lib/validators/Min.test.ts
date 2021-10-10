@@ -40,7 +40,7 @@ describe('Min:min()', () => {
 	})
 
 	test('Provided message should override config message.', () => {
-		setConfig({ language: { doesMatch: 'CONFIG CUSTOM!' } })
+		setConfig({ language: { minNumber: 'CONFIG CUSTOM!' } })
 		expect(min(3, 'msg')('fieldName', 'te')).toEqual('msg')
 	})
 })

@@ -3,9 +3,10 @@ import { config } from '../core/Config'
 import { ErrorReturnTypes, ValidatorFunction } from '../core/Validator'
 import { format } from '../utils/StringUtils'
 
-const doesMatch = (toMatch: unknown, customMessage?: string): ValidatorFunction =>
+const equals = (toEqual: unknown, strict = true, customMessage?: string): ValidatorFunction =>
 	createValidator((fieldKey: string, value: unknown): ErrorReturnTypes => {
-		return value !== toMatch ? format(config.language.doesMatch, fieldKey, value) : null
+		const check = strict ? value !== toEqual : value != toEqual
+		return check ? format(config.language.equals, fieldKey, value) : null
 	}, customMessage)
 
-export default doesMatch
+export default equals

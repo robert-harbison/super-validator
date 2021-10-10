@@ -7,8 +7,9 @@ interface Config {
 		minNumber: string
 		maxString: string
 		maxNumber: string
-		doesMatch: string
+		equals: string
 		required: string
+		typeOf: string
 	}
 }
 
@@ -18,8 +19,9 @@ const defaultConfig: Config = {
 		minNumber: '`{0}` is too small.',
 		maxString: '`{0}` is too long.',
 		maxNumber: '`{0}` is too large.',
-		doesMatch: '`{0}` does not match `{1}`.',
+		equals: '`{0}` does not equal `{1}`.',
 		required: '`{0}` is required.',
+		typeOf: '`{0}` is of the wrong type.',
 	},
 }
 

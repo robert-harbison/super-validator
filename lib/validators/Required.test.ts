@@ -27,7 +27,7 @@ describe('Required:required()', () => {
 	})
 
 	test('Provided message should override config message.', () => {
-		setConfig({ language: { doesMatch: 'CONFIG CUSTOM!' } })
+		setConfig({ language: { required: 'CONFIG CUSTOM!' } })
 		expect(required('msg')('theField', null)).toEqual('msg')
 	})
 })

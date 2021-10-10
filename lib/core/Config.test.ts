@@ -8,8 +8,9 @@ describe('Config:setConfig()', () => {
 				maxString: 'Too long.1',
 				minNumber: 'Too short.2',
 				maxNumber: 'Too long.2',
-				doesMatch: 'Must match.1',
+				equals: 'Must match.1',
 				required: 'Required.1',
+				typeOf: 'Required.1',
 			},
 		}
 		setConfig(newConfig)
@@ -20,7 +21,7 @@ describe('Config:setConfig()', () => {
 		const newConfig = {
 			language: {
 				maxString: 'Too long.1',
-				doesMatch: 'Must match.1',
+				equals: 'Must match.1',
 				required: 'Required.1',
 			},
 		}
