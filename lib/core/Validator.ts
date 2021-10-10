@@ -93,7 +93,6 @@ export const exportedForTesting = {
 }
 
 // TODO: add custom log function to config and add loging.
-// TODO: Order docs pages correctly.
 // TODO: make sure the docs make sense alot of them are kind of jotted ideas.
 // TODO: Add links throughout read me and docs.
 // TODO: edit readme

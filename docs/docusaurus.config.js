@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const lightCodeTheme = require('prism-react-renderer/themes/github')
 const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
@@ -19,9 +21,7 @@ module.exports = {
 			/** @type {import('@docusaurus/preset-classic').Options} */
 			({
 				docs: {
-					sidebarPath: require.resolve('./sidebars.js'),
-					// Please change this to your repo.
-					editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+					editUrl: 'https://github.com/robert-harbison/super-validator',
 					routeBasePath: '/',
 				},
 				theme: {

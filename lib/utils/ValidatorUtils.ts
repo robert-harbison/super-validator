@@ -1,6 +1,13 @@
 import { ErrorReturnTypes, ValidatorFunction } from '../core/Validator'
 import { format } from './StringUtils'
 
+/**
+ * Creates a validator function.
+ *
+ * @param check The function to determine if there are errors.
+ * @param customMessage The custom message to use in place of validator errors.
+ * @returns The new validator function.
+ */
 export const createValidator = <T = unknown>(check: ValidatorFunction<T>, customMessage?: string): ValidatorFunction<T> => {
 	return (fieldKey: string, value: T): ErrorReturnTypes => {
 		const result = check(fieldKey, value)
