@@ -12,13 +12,13 @@ describe('Equals:equals()', () => {
 
 	test('Should validate based on the strict option.', () => {
 		expect(equals(null)('theField', null)).toEqual(null)
-		expect(equals(null)('theField', undefined)).toEqual('`theField` does not equal `undefined`.')
+		expect(equals(null)('theField', undefined)).toEqual('`theField` does not equal target.')
 		expect(equals(null, false)('theField2', null)).toEqual(null)
 		expect(equals(null, false)('theField2', undefined)).toEqual(null)
 	})
 
 	test('Should return error if value does not match.', () => {
-		expect(equals('test')('theField', 'test12')).toEqual('`theField` does not equal `test12`.')
+		expect(equals('test')('theField', 'test12')).toEqual('`theField` does not equal target.')
 	})
 
 	test('Should return custom message if provided when values do not match', () => {

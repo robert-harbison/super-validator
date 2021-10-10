@@ -10,7 +10,6 @@ module.exports = {
 	baseUrl: '/',
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'warn',
-	favicon: 'img/favicon.ico',
 	organizationName: 'robert-harbison', // Usually your GitHub org/user name.
 	projectName: 'super-validator', // Usually your repo name.
 

@@ -2,14 +2,15 @@ import merge from 'merge-deep'
 import { RecursivePartial } from '../utils/ObjectUtils'
 
 interface Config {
+	// All language configs.
 	language: {
-		minString: string
-		minNumber: string
-		maxString: string
-		maxNumber: string
-		equals: string
-		required: string
-		typeOf: string
+		minString: string // The message to give when the min validator fails for a string.
+		minNumber: string // The message to give when the min validator fails for a number.
+		maxString: string // The message to give when the max validator fails for a string.
+		maxNumber: string // The message to give when the max validator fails for a number.
+		equals: string // The message to give when the equals validator fails.
+		required: string // The message to give when the required validator fails.
+		typeOf: string // The message to give when the typeOf validator fails.
 	}
 }
 
@@ -19,7 +20,7 @@ const defaultConfig: Config = {
 		minNumber: '`{0}` is too small.',
 		maxString: '`{0}` is too long.',
 		maxNumber: '`{0}` is too large.',
-		equals: '`{0}` does not equal `{1}`.',
+		equals: '`{0}` does not equal target.',
 		required: '`{0}` is required.',
 		typeOf: '`{0}` is of the wrong type.',
 	},

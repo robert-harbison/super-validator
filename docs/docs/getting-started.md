@@ -27,7 +27,7 @@ This is a basic example of validating a schema. For more advanced usage please l
 -   [Schema Validation](schema-validation.md)
 -   [Custom Validators](custom-validators.md)
 -   Addon Validators
--   Custom Messages
+-   [Configuration](configuration.md)
 
 ```
 import { validateSchema, min, required } from "super-validator";

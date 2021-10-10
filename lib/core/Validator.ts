@@ -92,9 +92,12 @@ export const exportedForTesting = {
 	validateSingle,
 }
 
-// TODO: Optimize / review code early
-// TODO: Add links throughout read me.
+// TODO: add custom log function to config and add loging.
+// TODO: Order docs pages correctly.
+// TODO: make sure the docs make sense alot of them are kind of jotted ideas.
+// TODO: Add links throughout read me and docs.
 // TODO: edit readme
+// TODO: Check grammer, spelling and overall docs etc.
 // TODO: Optimize / review code final
 // TODO: push to master and move these comments to somewhere not here.
 // TODO: Add circle ci
