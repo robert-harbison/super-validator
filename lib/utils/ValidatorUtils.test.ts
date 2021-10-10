@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ErrorReturnTypes } from '../core/Validator'
 import { createValidator } from './ValidatorUtils'
 

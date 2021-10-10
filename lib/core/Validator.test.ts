@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { max, min, required } from '..'
-import { exportedForTesting, validateSchema, ValidatorSchema } from './Validator'
+import { ErrorReturnTypes, exportedForTesting, validateSchema, ValidatorSchema } from './Validator'
 
 const { processSingleValidator, processListOfValidators, validateSingle } = exportedForTesting
 
@@ -33,8 +34,8 @@ describe('Validator:processListOfValidators()', () => {
 		expect(
 			processListOfValidators(
 				[
-					(fieldKey: string, value: unknown): any => {
-						return
+					(fieldKey: string, value: unknown): ErrorReturnTypes => {
+						return null
 					},
 				],
 				'field',

@@ -1,8 +1,3 @@
-## Future Plans
-
--   Make schema support nested objects.
--   Add more validators: phone, email, boolean.
-
 ## Issues / Feature Requests
 
 If you have any feature requests or have any issues please post them [here](https://github.com/robert-harbison/super-validator/issues).

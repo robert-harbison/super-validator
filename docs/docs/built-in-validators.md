@@ -45,6 +45,10 @@ min(5)
 min(5, 'Custom Error Message')
 ```
 
+### Notes
+
+-   If the value is undefined or null this will not return a error. You should use required as well as this if you want to check if its not included.
+
 ## Max
 
 If the value to validate is a number it will check to make sure it is less than or equal to x. If the value is a string it will ensure the length of the string is not longer than x.
@@ -63,6 +67,10 @@ max(5)
 // Or
 max(5, 'Custom Error Message')
 ```
+
+### Notes
+
+-   If the value is undefined or null this will not return a error. You should use required as well as this if you want to check if its not included.
 
 ## TypeOf
 

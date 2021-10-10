@@ -5,13 +5,12 @@ import { format } from '../utils/StringUtils'
 
 const max = (maxValue: number, customMessage?: string): ValidatorFunction<string | number> =>
 	createValidator<string | number>((fieldKey: string, value: string | number): ErrorReturnTypes => {
-		const isString = typeof value === 'string'
 		if (value != undefined) {
-			if (isString) {
+			if (typeof value === 'string') {
 				if (value.length > maxValue) {
 					return format(config.language.maxString, fieldKey, value)
 				}
-			} else {
+			} else if (typeof value === 'number') {
 				if (value > maxValue) {
 					return format(config.language.maxNumber, fieldKey, value)
 				}

@@ -49,37 +49,30 @@ export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSc
 		}
 	}
 
-	if (Object.keys(errors).length === 0) {
-		return null
-	}
+	if (Object.keys(errors).length === 0) return null
 
 	return errors
 }
 
-const validateSingle = (fieldKey: string, valueToValidate: unknown, schemaValidatorFuncs: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
-	if (Array.isArray(schemaValidatorFuncs)) {
-		return processListOfValidators(schemaValidatorFuncs, fieldKey, valueToValidate)
+const validateSingle = (key: string, value: unknown, validator: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
+	if (Array.isArray(validator)) {
+		return processListOfValidators(validator, key, value)
 	} else {
-		return processSingleValidator(schemaValidatorFuncs, fieldKey, valueToValidate)
+		return processSingleValidator(validator, key, value)
 	}
 }
 
-const processSingleValidator = (validator: ValidatorFunction, fieldKey: string, valueToValidate: unknown): ErrorReturnTypes => {
-	const funcReturned = validator(fieldKey, valueToValidate)
-
-	if (funcReturned == null) {
-		return null
-	}
-
-	return Array.isArray(funcReturned) ? [...funcReturned] : funcReturned
+const processSingleValidator = (validator: ValidatorFunction, key: string, value: unknown): ErrorReturnTypes => {
+	const funcReturned = validator(key, value)
+	return funcReturned && Array.isArray(funcReturned) ? [...funcReturned] : funcReturned
 }
 
-const processListOfValidators = (validators: ValidatorFunction[], fieldKey: string, valueToValidate: unknown): ErrorReturnTypes => {
-	let validationResult: string | string[] = []
+const processListOfValidators = (validators: ValidatorFunction[], key: string, value: unknown): ErrorReturnTypes => {
+	let validationResult: string[] = []
 
 	for (let i = 0; i < validators.length; i++) {
 		const validatorFunc = validators[i]
-		const funcReturned = validatorFunc(fieldKey, valueToValidate)
+		const funcReturned = validatorFunc(key, value)
 		if (funcReturned != null) {
 			if (Array.isArray(funcReturned)) {
 				validationResult = [...validationResult, ...funcReturned]
@@ -89,10 +82,7 @@ const processListOfValidators = (validators: ValidatorFunction[], fieldKey: stri
 		}
 	}
 
-	if (validationResult.length === 0) {
-		return null
-	}
-
+	if (validationResult.length === 0) return null
 	return validationResult
 }
 
@@ -101,17 +91,14 @@ export const exportedForTesting = {
 	processSingleValidator,
 	validateSingle,
 }
-// Validators like min and max don't return a error if nothing is provided.
-// Adding variables to messages. 0 is fieldKey, 1 is value
 
-// TODO: Fix todos
+// TODO: Optimize / review code early
 // TODO: Add links throughout read me.
-// TODO: Look at doing some of the in the future in readme entries.
 // TODO: edit readme
-// TODO: Optimize / review code
+// TODO: Optimize / review code final
+// TODO: push to master and move these comments to somewhere not here.
 // TODO: Add circle ci
 // TODO: Release
 // TODO: Test in typescript. test in es6 and test in legacy js
-// TODO: Test in project.
 // TODO: Make library that support for password validator, google phone lib, validator js?.
 // TODO: Integrate into meeting_app and make sure it all works
