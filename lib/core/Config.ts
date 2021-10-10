@@ -14,10 +14,10 @@ interface Config {
 
 const defaultConfig: Config = {
 	language: {
-		minString: '`{0}` is shorter than `{2}`.',
-		minNumber: '`{0}` is smaller than `{2}`.',
-		maxString: '`{0}` is longer than `{2}`.',
-		maxNumber: '`{0}` is larger than `{2}`.',
+		minString: '`{0}` is too short.',
+		minNumber: '`{0}` is too small.',
+		maxString: '`{0}` is too long.',
+		maxNumber: '`{0}` is too large.',
 		doesMatch: '`{0}` does not match `{1}`.',
 		required: '`{0}` is required.',
 	},

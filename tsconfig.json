@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "es2015",
 		"target": "es5",
 		"types": ["jest", "node"],
 		"declaration": true,
-		"outDir": "./dist",
+		"outDir": "./build",
 		"strict": true,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"moduleResolution": "node"
 	},
 	"include": ["lib/**/*"],
-	"exclude": ["node_modules", "dist", "docs"]
+	"exclude": ["node_modules", "dist", "build", "docs", "rollup.config.js"]
 }

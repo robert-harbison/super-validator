@@ -25,7 +25,7 @@ describe('Config:setConfig()', () => {
 			},
 		}
 		setConfig(newConfig)
-		expect(config.language.minString).toEqual('`{0}` is shorter than `{2}`.')
+		expect(config.language.minString).toEqual('`{0}` is too short.')
 		expect(config.language.maxString).toEqual('Too long.1')
 	})
 })

@@ -1,15 +1,11 @@
+import { createValidator } from '..'
 import { config } from '../core/Config'
-import { ErrorReturnTypes } from '../core/Validator'
+import { ErrorReturnTypes, ValidatorFunction } from '../core/Validator'
 import { format } from '../utils/StringUtils'
 
-const required =
-	(customMessage?: string) =>
-	(fieldKey: string, value: unknown): ErrorReturnTypes => {
-		if (value == null) {
-			return (customMessage && format(customMessage, fieldKey, value)) || format(config?.language?.required, fieldKey, value)
-		}
-
-		return null
-	}
+const required = (customMessage?: string): ValidatorFunction =>
+	createValidator((fieldKey: string, value: unknown): ErrorReturnTypes => {
+		return value == null ? format(config.language.required, fieldKey, value) : null
+	}, customMessage)
 
 export default required

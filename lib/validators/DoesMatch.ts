@@ -1,14 +1,11 @@
+import { createValidator } from '..'
 import { config } from '../core/Config'
-import { ErrorReturnTypes } from '../core/Validator'
+import { ErrorReturnTypes, ValidatorFunction } from '../core/Validator'
 import { format } from '../utils/StringUtils'
 
-const doesMatch =
-	(toMatch: unknown, customMessage?: string) =>
-	(fieldKey: string, value: unknown): ErrorReturnTypes => {
-		if (value !== toMatch) {
-			return (customMessage && format(customMessage, fieldKey, value)) || format(config.language.doesMatch, fieldKey, value)
-		}
-		return null
-	}
+const doesMatch = (toMatch: unknown, customMessage?: string): ValidatorFunction =>
+	createValidator((fieldKey: string, value: unknown): ErrorReturnTypes => {
+		return value !== toMatch ? format(config.language.doesMatch, fieldKey, value) : null
+	}, customMessage)
 
 export default doesMatch

@@ -16,7 +16,7 @@ describe('Min:min()', () => {
 	})
 
 	test('Should return error if string value is shorter than required length.', () => {
-		expect(min(3)('fieldName', 'te')).toEqual('`fieldName` is shorter than `3`.')
+		expect(min(3)('fieldName', 'te')).toEqual('`fieldName` is too short.')
 	})
 
 	test('Should not return error if number value is larger than required number.', () => {
@@ -24,7 +24,7 @@ describe('Min:min()', () => {
 	})
 
 	test('Should return error if number value is smaller than required number.', () => {
-		expect(min(3)('fieldName', 2)).toEqual('`fieldName` is smaller than `3`.')
+		expect(min(3)('fieldName', 2)).toEqual('`fieldName` is too small.')
 	})
 
 	test('Should return custom error message if value is shorter than required length and custom message is provided.', () => {

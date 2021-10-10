@@ -1,6 +1,6 @@
 import { GenericObjectOfType, GenericObject, addNestedValueToObj } from '../utils/ObjectUtils'
 
-type ValidatorFunction = (fieldKey: string, value: unknown) => ErrorReturnTypes
+export type ValidatorFunction<T = unknown> = (fieldKey: string, value: T) => ErrorReturnTypes
 
 export type ErrorReturnTypes = string | string[] | null
 export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[] | GenericObject> {}
@@ -33,7 +33,6 @@ export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSc
 			const value = objToValidate[key]
 
 			if (Array.isArray(validator) || typeof validator === 'function') {
-				// TODO: Can we remove this as?
 				const validationResult = validateSingle(key, value, validator as ValidatorFunction | ValidatorFunction[])
 				if (validationResult && validationResult.length > 0) {
 					if (parentObjPath !== undefined) {
@@ -106,21 +105,15 @@ export const exportedForTesting = {
 // Validators like min and max don't return a error if nothing is provided.
 // Adding variables to messages. 0 is fieldKey, 1 is value
 // When validating a schema if you pass in a array of validators it will return a array of errors instead of a string
+// We use validator js for some validators.
 
 // TODO: Add links throughout read me.
-// TODO: Add minification? / obsufaction?
-// Support nested schemas
-// TODO: Change name to something like validate js schema and make it really based of validate js not a library that just supports it.
-// Add readme
-// TODO: Add support for validate js. Make a validator (Like useValidatorJs) that takes in a validate js function. Only works with custom and validation js functions.
-// TODO: add password validator that takes in password options.
+// TODO: Look at doing some of the in the future in readme entries.
+// TODO: edit readme
 // TODO: Optimize / review code
-// TODO: Fix Todos
-// TODO: Try to optimise performance.
-// TODO: Test in typescript. test in es6 and test in legacy js
-// TODO: Test in project.
-// TODO: Look at doing some of the in the future in readme.
 // TODO: Add circle ci
 // TODO: Release
-// TOOD: Add phone, email validator + look at validator js for other ideas to add.
+// TODO: Test in typescript. test in es6 and test in legacy js
+// TODO: Test in project.
+// TODO: Make library that support for password validator, google phone lib, validator js?.
 // TODO: Integrate into meeting_app and make sure it all works

@@ -126,7 +126,7 @@ describe('Validator:validateSchema()', () => {
 
 		expect(test).toEqual({
 			test2: '`test2` is required.',
-			options: { test2: '`test2` is required.', testb: { testc: ['`testc` is shorter than `5`.', '`testc` is longer than `2`.'], testf: '`testf` is required.' } },
+			options: { test2: '`test2` is required.', testb: { testc: ['`testc` is too short.', '`testc` is too long.'], testf: '`testf` is required.' } },
 		})
 	})
 })
