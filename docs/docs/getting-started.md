@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Installation
 
-Install Super Validator using the following commands:
+Install Super Validator using the following commands (This library was written in typescript and includes type definitions):
 
 NPM:
 
@@ -22,27 +22,61 @@ yarn add super-validator
 
 ## Basic Schema Validation
 
-Validates a object in accordance with the schema. You can read more about schemas (here) and validators (here). Also you can read about adding custom error messages here.
+This is a basic example of validating a schema. For more advanced usage please look at the links below.
+
+-   [Schema Validation](schema-validation.md)
+-   [Custom Validators](custom-validators.md)
+-   Addon Validators
+-   Custom Messages
 
 ```
-import Validator, { min, required } from "super-validator";
+import { validateSchema, min, required } from "super-validator";
 
 // This creates a schema for the object to validate. The key names must be the same as in the object you are validating.
 const schema = {
   // You can use single validators.
-  firstName: [required()], // Username is required.
-  // You can also pass in a array of validators
-  username: [required(), min(3)], // Username is required and must be a at least 3 characters.
+  test1: required(), // test1 is required.
+  // You can also pass in a array of validators. NOTE: When doing this the error will be
+  // returned in a array this is in case there are multiple errors.
+  test2: [required(), min(3)], // test2 is required and must be a at least 3 characters.
+  nested: {
+    test1: required(),
+    test2: required(),
+  },
 };
 
 // No errors obj has no errors.
-const test1 = Validator.validateSchema(
-  { firstName: "Name", username: "Username" },
+const test1 = validateSchema(
+  {
+    test1: "Test1",
+    test2: "Test2",
+    nested: {
+      test1: 1,
+      test2: 2,
+    },
+  },
   schema
 );
 console.log(test1); // Output: null
 
-// Errors because obj is missing firstName and username is too short.
-const test2 = Validator.validateSchema({ username: "ta" }, schema);
-console.log(test2); // { firstName: [ '`firstName` is required.' ] }, { username: [ '`username` is shorter than `3`.' ] } ]
+// Errors because obj is missing some values.
+const test2 = validateSchema(
+  {
+    test1: "Test1",
+    nested: {
+      test1: "Test",
+    },
+  },
+  schema
+);
+console.log(test2);
+// Output:
+// {
+//   test2: [ '`test2` is required.' ], // Notice that this is a array since in the schema a array was passed.
+//   nested: {
+//     test2: '`test2` is required.'
+//   }
+// }
 ```
+
+## Addons

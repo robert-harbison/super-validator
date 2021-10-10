@@ -101,11 +101,8 @@ export const exportedForTesting = {
 	processSingleValidator,
 	validateSingle,
 }
-// Notes validation function can return strings or arrays of string if it returns null there is no error. This will later be made into a object so you can have a dev and user message.
 // Validators like min and max don't return a error if nothing is provided.
 // Adding variables to messages. 0 is fieldKey, 1 is value
-// When validating a schema if you pass in a array of validators it will return a array of errors instead of a string
-// We use validator js for some validators.
 
 // TODO: Add links throughout read me.
 // TODO: Look at doing some of the in the future in readme entries.

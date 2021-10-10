@@ -10,6 +10,7 @@
 		"dist"
 	],
 	"scripts": {
+		"postinstall": "cd docs && npm install",
 		"prepare": "husky install",
 		"prepublish": "npm run test && npm run build",
 		"build": "rollup -c rollup.config.js",

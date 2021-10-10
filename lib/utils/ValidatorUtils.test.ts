@@ -23,6 +23,13 @@ describe('ValidatorUtils:createValidator()', () => {
 		expect(test('field', 'value')).toEqual(['error', 'error2', 'error3'])
 	})
 
+	test('Should return null if empty array is returned from validator', () => {
+		const test = createValidator((fieldKey: string, value: unknown): ErrorReturnTypes => {
+			return []
+		})
+		expect(test('field', 'value')).toEqual(null)
+	})
+
 	test('Should return the custom message if provided.', () => {
 		const test = createValidator((fieldKey: string, value: unknown): ErrorReturnTypes => {
 			return 'error'
