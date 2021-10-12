@@ -8,7 +8,7 @@ sidebar_position: 3
 
 Schemas are a object representing the keys and their respective validators to use when validating a object.
 
-The key in a schema will be the name of the key in the object to validate. Each key should have a value of a validator function or a array of validator functions.
+The key in a schema will be the name of the key in the object to validate. Each key should have a value of a validator or a array of validators.
 
 ```
 const schema = {
@@ -34,9 +34,13 @@ Here is the format the errors will be returned in (This assumes every field is n
 }
 ```
 
-## validateSchema(toValidateObj: GenericObject, schema: ValidatorSchema)
+## validateSchema()
 
 Validates a custom object according to a schema and returns the errors for each field.
+
+```
+validateSchema(toValidateObj: GenericObject, schema: ValidatorSchema)
+```
 
 ### Params
 
@@ -56,8 +60,8 @@ This is a basic example of validating a schema. For more advanced usage please l
 
 -   [Schema Validation](schema-validation.md)
 -   [Custom Validators](custom-validators.md)
--   Addon Validators
--   Custom Messages
+-   [Addon Validators](addon-validators.md)
+-   [Custom Messages](configuration.md)
 
 ```
 import { validateSchema, min, required } from "super-validator";
@@ -108,5 +112,3 @@ console.log(test2);
 //   }
 // }
 ```
-
-## Typescript Example

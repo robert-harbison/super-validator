@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Configuration
 
-You can edit the configuration using `setConfig`, you should call this as early in your application as possible. Currently this will only allow you to change the global language for the built in validators. In the future this will allow you to configure other parts of the library and custom validator messages.
+You can edit the configuration using `setConfig`, you should call this as early in your application as possible. Currently this will only allow you to change the global language for the built in validators.
 
 # Language
 
@@ -37,7 +37,7 @@ language: {
 
 ## Message Format
 
-You can inject values into a error message to include parameters from the validation. In the message string you can '{paramIndex}' with in the string to inject a calue. `'Test value is: {0}'` will output `'Test value is: test'` assuming the value passed to the validator was `'test'`.
+You can inject values into a error message to include parameters from the validation. In the message string you can '{paramIndex}' with in the string to inject a value. `'Test value is: {0}'` will output `'Test value is: test'` assuming the value passed to the validator was `'test'`.
 
 ### Injection Values
 

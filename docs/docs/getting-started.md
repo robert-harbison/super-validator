@@ -1,8 +1,11 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
+slug: /
 ---
 
 # Getting Started
+
+Super Validator provides a customizable solution to validating schemas for both frontend and backend projects. While this library does include some basic validators it is intended that you create your own or use one of our addon libraries.
 
 ## Installation
 
@@ -26,7 +29,7 @@ This is a basic example of validating a schema. For more advanced usage please l
 
 -   [Schema Validation](schema-validation.md)
 -   [Custom Validators](custom-validators.md)
--   Addon Validators
+-   [Addon Validators](addon-validators.md)
 -   [Configuration](configuration.md)
 
 ```
@@ -80,3 +83,5 @@ console.log(test2);
 ```
 
 ## Addons
+
+[COMING SOON]

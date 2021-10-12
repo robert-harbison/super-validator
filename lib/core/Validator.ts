@@ -91,16 +91,3 @@ export const exportedForTesting = {
 	processSingleValidator,
 	validateSingle,
 }
-
-// TODO: add custom log function to config and add loging.
-// TODO: make sure the docs make sense alot of them are kind of jotted ideas.
-// TODO: Add links throughout read me and docs.
-// TODO: edit readme
-// TODO: Check grammer, spelling and overall docs etc.
-// TODO: Optimize / review code final
-// TODO: push to master and move these comments to somewhere not here.
-// TODO: Add circle ci
-// TODO: Release
-// TODO: Test in typescript. test in es6 and test in legacy js
-// TODO: Make library that support for password validator, google phone lib, validator js?.
-// TODO: Integrate into meeting_app and make sure it all works

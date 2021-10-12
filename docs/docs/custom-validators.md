@@ -4,9 +4,13 @@ sidebar_position: 5
 
 # Custom Validators
 
-## createValidator(cb: (fieldKey: string, value: unknown) => ErrorReturnTypes, customMessage?: string)
+## createValidator()
 
 Creates a custom validator function that can be passed into a schema.
+
+```
+createValidator(cb: (fieldKey: string, value: unknown) => ErrorReturnTypes, customMessage?: string)
+```
 
 ### Params
 
@@ -69,7 +73,7 @@ export const customValidator = (customMessage) => createValidator((fieldKey, val
   }, customMessage);
 ```
 
-### Custom Validator With Parameters.
+### Custom Validator With Parameters
 
 You can also take in custom parameters when making a validator. In the below example you will pass in a number (n) that is used to check if the value is greater than n.
 
