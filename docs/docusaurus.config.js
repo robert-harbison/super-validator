@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 module.exports = {
 	title: 'Super Validator',
 	url: 'https://robert-harbison.github.io/super-validator/',
-	baseUrl: '/',
+	baseUrl: '/super-validator/',
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'warn',
 	organizationName: 'robert-harbison', // Usually your GitHub org/user name.
