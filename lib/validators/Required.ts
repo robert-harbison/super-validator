@@ -1,15 +1,10 @@
-import { ErrorReturnTypes } from '../core/Validator'
+import { createValidator } from '..'
+import { config } from '../core/Config'
+import { ErrorReturnTypes, ValidatorFunction } from '../core/Validator'
 
-const required =
-	(customMessage?: string) =>
-	(value: unknown): ErrorReturnTypes => {
-		if (value === undefined || value === null) {
-			return customMessage || 'Required.'
-		}
-
-		return null
-	}
+const required = (customMessage?: string): ValidatorFunction =>
+	createValidator((fieldKey: string, value: unknown): ErrorReturnTypes => {
+		return value == null ? config.language.required : null
+	}, customMessage)
 
 export default required
-
-// TODO: Add opposite variations for these types of validators do it nicely though like adding not method before or someting.

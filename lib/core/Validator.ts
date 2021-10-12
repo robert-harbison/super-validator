@@ -1,10 +1,10 @@
-import { GenericObjectOfType, GenericObject } from '../utils/ObjectUtils'
+import { GenericObjectOfType, GenericObject, addNestedValueToObj } from '../utils/ObjectUtils'
 
-type ValidatorFunction = (value: unknown) => ErrorReturnTypes
+export type ValidatorFunction<T = unknown> = (fieldKey: string, value: T) => ErrorReturnTypes
 
-export type ErrorReturnTypes = string | string[] | null // TODO: Should we really have this string type here?
-export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[]> {}
-export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes> {}
+export type ErrorReturnTypes = string | string[] | null
+export interface ValidatorSchema extends GenericObjectOfType<ValidatorFunction | ValidatorFunction[] | GenericObject> {}
+export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes | ValidatorError> {}
 
 /**
  * Validates a object against a schema.
@@ -13,65 +13,67 @@ export interface ValidatorError extends GenericObjectOfType<ErrorReturnTypes> {}
  * @param schema The schema to use for validation.
  * @returns The errors from validating. Returns 'null' if there are no erros.
  */
-export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSchema): ValidatorError[] | null => {
-	const errors: ValidatorError[] = []
+export const validateSchema = (toValidateObj: GenericObject, schema: ValidatorSchema): ValidatorError | null => {
+	const errors: ValidatorError = {}
 
-	const toValidateObjKeys = Object.keys(toValidateObj)
-	for (let i = 0; i < toValidateObjKeys.length; i++) {
-		const toValidateObjKey = toValidateObjKeys[i]
-		const objValue = toValidateObj[toValidateObjKey]
-		const schemaValidatorFuncs = schema[toValidateObjKey]
+	// Object to validate, validation schema, nested object parent key
+	const validationStack: Array<[GenericObject, ValidatorSchema, string[]?]> = [[toValidateObj, schema]]
 
-		const validationResult = validateSingle(objValue, schemaValidatorFuncs)
-		if (validationResult && validationResult.length > 0) {
-			const errorObj: GenericObject = {}
-			errorObj[toValidateObjKey] = validationResult
-			errors.push(errorObj)
+	while (validationStack.length > 0) {
+		const validationParams = validationStack.pop()
+		if (!validationParams) continue
+
+		const [objToValidate, validationSchema, parentObjPath] = validationParams
+		if (objToValidate === undefined || validationSchema === undefined) continue
+
+		const keys = Object.keys(validationSchema)
+		for (let i = 0; i < keys.length; i++) {
+			const key = keys[i]
+			const validator = validationSchema[key]
+			const value = objToValidate[key]
+
+			if (Array.isArray(validator) || typeof validator === 'function') {
+				const validationResult = validateSingle(key, value, validator as ValidatorFunction | ValidatorFunction[])
+				if (validationResult && validationResult.length > 0) {
+					if (parentObjPath !== undefined) {
+						addNestedValueToObj(errors, [...parentObjPath, key], validationResult)
+					} else {
+						errors[key] = validationResult
+					}
+				}
+				// Deals with nested schemas and objects.
+			} else if (typeof validator === 'object') {
+				const _parentObjPath = parentObjPath ? [...parentObjPath, key] : [key]
+				validationStack.push([value, validator, _parentObjPath])
+			}
 		}
 	}
 
-	if (errors.length === 0) {
-		return null
-	}
+	if (Object.keys(errors).length === 0) return null
 
 	return errors
 }
 
-/**
- * Validates a single object.
- *
- * @param valueToValidate The value to use for validation.
- * @param schemaValidatorFuncs The validator function or array of validator functions to use to validate the value provided.
- * @returns The errors from validating. Returns 'null' if there are no erros.
- */
-export const validateSingle = (valueToValidate: unknown, schemaValidatorFuncs: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
-	if (Array.isArray(schemaValidatorFuncs)) {
-		return processListOfValidators(schemaValidatorFuncs, valueToValidate)
+const validateSingle = (key: string, value: unknown, validator: ValidatorFunction | ValidatorFunction[]): ErrorReturnTypes => {
+	if (Array.isArray(validator)) {
+		return processListOfValidators(validator, key, value)
 	} else {
-		return processSingleValidator(schemaValidatorFuncs, valueToValidate)
+		return processSingleValidator(validator, key, value)
 	}
 }
 
-const processSingleValidator = (validator: ValidatorFunction, valueToValidate: unknown): ErrorReturnTypes => {
-	const funcReturned = validator(valueToValidate)
-
-	if (funcReturned === undefined || funcReturned === null) {
-		return null
-	} else if (Array.isArray(funcReturned)) {
-		return [...funcReturned]
-	} else {
-		return funcReturned
-	}
+const processSingleValidator = (validator: ValidatorFunction, key: string, value: unknown): ErrorReturnTypes => {
+	const funcReturned = validator(key, value)
+	return funcReturned && Array.isArray(funcReturned) ? [...funcReturned] : funcReturned
 }
 
-const processListOfValidators = (validators: ValidatorFunction[], valueToValidate: unknown): ErrorReturnTypes => {
+const processListOfValidators = (validators: ValidatorFunction[], key: string, value: unknown): ErrorReturnTypes => {
 	let validationResult: string[] = []
 
 	for (let i = 0; i < validators.length; i++) {
 		const validatorFunc = validators[i]
-		const funcReturned = validatorFunc(valueToValidate)
-
-		if (funcReturned !== null && funcReturned !== undefined) {
+		const funcReturned = validatorFunc(key, value)
+		if (funcReturned != null) {
 			if (Array.isArray(funcReturned)) {
 				validationResult = [...validationResult, ...funcReturned]
 			} else {
@@ -80,23 +82,12 @@ const processListOfValidators = (validators: ValidatorFunction[], valueToValidat
 		}
 	}
 
-	if (validationResult.length === 0) {
-		return null
-	}
-
+	if (validationResult.length === 0) return null
 	return validationResult
 }
 
 export const exportedForTesting = {
 	processListOfValidators,
 	processSingleValidator,
+	validateSingle,
 }
-// Notes validation function can return strings or arrays of string if it returns null there is no error. This will later be made into a object so you can have a dev and user message.
-// Validators like min and max don't return a error if nothing is provided.
-
-// TODO: ALL THESE
-// Add options for custom language.
-// add docs.... jsdocs?
-// Add readme
-// Add contributions file
-// Add license
