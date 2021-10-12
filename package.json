@@ -1,16 +1,16 @@
 {
-	"name": "super-validator",
-	"version": "0.1.0",
+	"name": "@super-validator/core",
+	"version": "0.1.1",
 	"description": "A customizable lightweight schema validator for NodeJS that is designed for use with both frontend and backend projects.",
 	"main": "dist/index.js",
 	"module": "dist/index.es.js",
 	"jsnext:main": "dist/index.es.js",
 	"types": "dist/index.d.ts",
+	"private": false,
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"postinstall": "cd docs && npm install",
 		"prepare": "husky install",
 		"prepublish": "npm run test && npm run build",
 		"build": "rollup -c rollup.config.js",
