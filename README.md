@@ -1,3 +1,7 @@
+## Documentation
+
+View the documentation [here](https://robert-harbison.github.io/super-validator/).
+
 ## Issues / Feature Requests
 
 If you have any feature requests or have any issues please post them [here](https://github.com/robert-harbison/super-validator/issues).
